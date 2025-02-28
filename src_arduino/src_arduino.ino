@@ -7,8 +7,8 @@ volatile bool Bprev = 0;
 int distancePrinted = 0;
 volatile int distance = 0;
 volatile bool distanceChanged = false;
-int flatLen = 1;
-bool flatCountingIsUp = false;
+int flatLen = 0;
+bool flatCountingEnabled = false;
 bool flatEstablished = false;
 int flatCounter = 0;
 int maxDistance = -1000;
@@ -43,21 +43,19 @@ void loop() {
         Serial.println(maxDistance);
     }
   }
-  else if (!flatEstablished){
-    if (flatCountingIsUp && distancePrinted == distance) {
-      if (distance == maxDistance){
-        flatLen++;
+  else if (!flatEstablished) {
+    if (flatCountingEnabled) { //Считаем только при включенном счете
+      if (distance == maxDistance) { // Если текущее значение максимум - считаем
+          flatLen++;
       }
-      else {
+      else if (distancePrinted == maxDistance) { // Если предыдущее значение было максимумом, а текущее - нет, то фиксируем максимум
         flatEstablished = true;
         Serial.print("Flat length Established:");
         Serial.println(flatLen);
       }
     }
-    else {
-      if (distancePrinted != distance) {
-        flatCountingIsUp = true;
-      }
+    else if (distance != maxDistance) { // Счет включается только когда мы не находимся на верхней полке (максимуме)
+      flatCountingEnabled = true;
     }
   }
 
@@ -66,7 +64,7 @@ void loop() {
   distancePrinted = distance;
   interrupts();
 
-  if (distance == maxDistance){
+  if (distance == maxDistance && flatEstablished){
     flatCounter++;
     if (flatCounter == flatLen / 2){
       Serial.println('P');
