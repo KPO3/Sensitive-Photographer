@@ -10,11 +10,14 @@ volatile bool distanceChanged = false;
 int flatLen = 0;
 bool flatCountingEnabled = false;
 bool flatEstablished = false;
-int flatCounter = 0;
+int flatCounter = 1;
 int maxDistance = -1000;
 bool maxEstablished = false;
 int setUpCounter = 0;
 int setUpTime = 100;
+long lastPhoto = 0;
+long span = 3;
+long period = 5;
 
 void setup() {
 
@@ -58,21 +61,29 @@ void loop() {
       flatCountingEnabled = true;
     }
   }
+  //unsigned long time = millis();
+  //Serial.print("TEST: "); Serial.print(time); Serial.print(" - "); Serial.print(lastPhoto); Serial.print(" - "); Serial.println(period); 
+  if (distance == distancePrinted && flatEstablished ){ //&& time >= lastPhoto + period - span
+    flatCounter++;
+    if (flatCounter == flatLen / 2){
+      Serial.println('P');
+      //if (lastPhoto != 0) period = time - lastPhoto;
+      //lastPhoto = time;
+    }
+  noInterrupts();
+  distanceChanged = false;
+  distancePrinted = distance;
+  interrupts();
+  }
+  else {
+    flatCounter = 1;
+  }
 
   noInterrupts();
   distanceChanged = false;
   distancePrinted = distance;
   interrupts();
 
-  if (distance == maxDistance && flatEstablished){
-    flatCounter++;
-    if (flatCounter == flatLen / 2){
-      Serial.println('P');
-    }
-  }
-  else {
-    flatCounter = 0;
-  }
   delay(100);
 }
 void pinChangeInterrupt(){

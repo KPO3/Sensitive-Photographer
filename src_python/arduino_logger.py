@@ -31,14 +31,14 @@ try:
                     try:
                         ret, frame = camera.read()
                     except Exception as e:
-                        print("Ошибка чтения с камеры: {e}")
+                        print(f"Ошибка чтения с камеры: {e}")
                         continue
                     photoCounter += 1
                     print("Снимок!")
                     try:
                         cv2.imwrite(f"microscope-{photoCounter}.png", frame)
                     except Exception as e:
-                        print("Ошибка записи фото: {e}")
+                        print(f"Ошибка записи фото: {e}")
                     continue
                 elif data[0].lstrip('-').isnumeric():
                     current_time = time.time() - start_time
