@@ -106,7 +106,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../../../../Images/632470_screenshots_20191022113843_1.jpg</pixmap>
+     <pixmap>../../../../Images/632470_screenshots_20191022113843_1.jpg</pixmap>
     </property>
     <property name="wordWrap">
      <bool>false</bool>
