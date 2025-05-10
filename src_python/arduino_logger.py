@@ -2,6 +2,13 @@ import serial
 import time
 import cv2
 import sys
+import pathlib
+
+# Входные параметры argv:
+# argv[1] - порт Arduino
+# argv[2] - id камеры
+# argv[3] - имя файла для записи данных графика
+# argv[4] - путь по которому создается проект
 
 def read_data():
     # Настройки последовательного порта
@@ -18,6 +25,12 @@ def read_data():
 
     baud_rate = 9600             # Скорость передачи данных
     output_file = 'data_log.txt' # Имя файла для записи
+    if len(sys.argv) > 3:
+        print(f"Записываем данные в файл {sys.argv[2]}")
+        output_file = sys.argv[3]
+        if not output_file.endswith('.txt'):
+            output_file += '.txt'
+    
 
     # Значения показаний акселерометра
     x = []

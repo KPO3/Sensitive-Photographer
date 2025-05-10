@@ -119,7 +119,16 @@ class Ui_MainWindow(object):
     
 
 if __name__ == "__main__":
-    import sys
+    import sys, os
+    
+    # Получаем путь к директории, где находится main.py
+    application_path = os.path.dirname(os.path.abspath(__file__))
+
+    # Добавляем эту директорию в путь поиска модулей
+    if application_path not in sys.path:
+        sys.path.append(application_path)
+
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

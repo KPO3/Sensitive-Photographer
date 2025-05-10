@@ -59,7 +59,7 @@ class RealTimePlot:
         sys.exit(self.app.exec())
 
 if __name__ == '__main__':
-    filename = 'data.txt'  # Укажите путь к вашему файлу с данными
+    filename = 'data_log.txt'  # Укажите путь к вашему файлу с данными
     if len(sys.argv) > 1:
         filename = sys.argv[1]
     print(f"Читаю из {filename}")
