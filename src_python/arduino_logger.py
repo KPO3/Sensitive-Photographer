@@ -3,29 +3,29 @@ import time
 import cv2
 import sys
 
-# Настройки последовательного порта
-serial_port = 'COM5'  # Замените на порт, к которому подключено Arduino
-if len(sys.argv) > 1:
-    print(f"Используем порт {sys.argv[1]}")
-    serial_port = sys.argv[1]
-# Настройки камеры
-usb_camera = 1
-camera = cv2.VideoCapture(usb_camera)
-if len(sys.argv) > 2:
-    print(f"Используем камеру {sys.argv[2]}")
-    usb_camera = sys.argv[2]
-
-baud_rate = 9600             # Скорость передачи данных
-output_file = 'data_log.txt' # Имя файла для записи
-
-# Значения показаний акселерометра
-x = []
-t = []
-
-photoCounter = 0
-start_time = time.time()
-
 def read_data():
+    # Настройки последовательного порта
+    serial_port = 'COM5'  # Замените на порт, к которому подключено Arduino
+    if len(sys.argv) > 1:
+        print(f"Используем порт {sys.argv[1]}")
+        serial_port = sys.argv[1]
+    # Настройки камеры
+    usb_camera = 1
+    camera = cv2.VideoCapture(usb_camera)
+    if len(sys.argv) > 2:
+        print(f"Используем камеру {sys.argv[2]}")
+        usb_camera = sys.argv[2]
+
+    baud_rate = 9600             # Скорость передачи данных
+    output_file = 'data_log.txt' # Имя файла для записи
+
+    # Значения показаний акселерометра
+    x = []
+    t = []
+
+    photoCounter = 0
+    start_time = time.time()
+
     try:
         # Открываем соединение с Arduino
         with serial.Serial(serial_port, baud_rate, timeout=1) as arduino, open(output_file, 'w') as file:
