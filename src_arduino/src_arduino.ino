@@ -15,9 +15,6 @@ int maxDistance = -1000;
 bool maxEstablished = false;
 int setUpCounter = 0;
 int setUpTime = 100;
-long lastPhoto = 0;
-long span = 3;
-long period = 5;
 
 void setup() {
 
@@ -61,14 +58,10 @@ void loop() {
       flatCountingEnabled = true;
     }
   }
-  //unsigned long time = millis();
-  //Serial.print("TEST: "); Serial.print(time); Serial.print(" - "); Serial.print(lastPhoto); Serial.print(" - "); Serial.println(period); 
-  if (distance == distancePrinted && flatEstablished ){ //&& time >= lastPhoto + period - span
+  if (distance == distancePrinted && flatEstablished ){
     flatCounter++;
     if (flatCounter == flatLen / 2){
       Serial.println('P');
-      //if (lastPhoto != 0) period = time - lastPhoto;
-      //lastPhoto = time;
     }
   noInterrupts();
   distanceChanged = false;

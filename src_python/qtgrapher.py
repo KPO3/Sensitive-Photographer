@@ -6,7 +6,7 @@ from PyQt6 import QtCore, QtWidgets
 
 class RealTimePlot:
     def __init__(self, filename):
-        self.filename = 'data_log.txt'
+        self.filename = filename
 
         # Создаем приложение и окно
         self.app = QtWidgets.QApplication(sys.argv)
@@ -60,5 +60,8 @@ class RealTimePlot:
 
 if __name__ == '__main__':
     filename = 'data.txt'  # Укажите путь к вашему файлу с данными
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+    print(f"Читаю из {filename}")
     plot = RealTimePlot(filename)
     plot.run()
