@@ -7,9 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import cv2, time
-import qtgrapher, arduino_logger
-import subprocess
 
 
 class Ui_MainWindow(object):
@@ -67,9 +64,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.refresh_cameras()
-        self.add_functions()
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Sensitive Photographer"))
@@ -78,51 +72,3 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setPlaceholderText(_translate("MainWindow", "Название"))
         self.GraphBtn.setText(_translate("MainWindow", "График"))
         self.comboBox.setPlaceholderText(_translate("MainWindow", "Микроскоп"))
-
-    def add_functions(self):
-        self.StartBtn.clicked.connect(self.start)
-        self.GraphBtn.clicked.connect(self.graph)
-        
-    def start(self):
-        self.label.setText("Сервер запущен")
-        subprocess.Popen([sys.executable, "arduino_logger.py", self.lineEdit.text(), self.lineEdit_2.text()])
-
-    def graph(self):
-        print("График создан")
-        subprocess.Popen([sys.executable, "qtgrapher.py", self.lineEdit_2.text(), "1"])
-        self.label.setText("График создан")
-
-    def get_available_cameras(self, max_to_test=10):
-        available_cameras = []
-        for i in range(max_to_test):
-            try:
-                cap = cv2.VideoCapture(i)
-                if cap.isOpened():
-                    ret, _ = cap.read()
-                    if ret:
-                        available_cameras.append(i)
-                    cap.release()
-            except:
-                continue
-        return available_cameras
-
-    def refresh_cameras(self):
-        self.comboBox.clear()
-        available_cameras = self.get_available_cameras()
-        
-        if not available_cameras:
-            self.comboBox.addItem("Не найдено доступных камер")
-            self.comboBox.setEnabled(False)
-        else:
-            for cam_idx in available_cameras:
-                self.comboBox.addItem(f"Камера {cam_idx}", cam_idx)
-    
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
