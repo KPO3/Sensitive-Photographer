@@ -8,14 +8,7 @@ volatile bool Bprev = 0;
 int distancePrinted = 0;
 volatile int distance = 0;
 volatile bool distanceChanged = false;
-int flatLen = 0;
-bool flatCountingEnabled = false;
-bool flatEstablished = false;
-int flatCounter = 1;
-int maxDistance = -1000;
-bool maxEstablished = false;
-int setUpCounter = 0;
-int setUpTime = 100;
+bool madePhoto = false;
 
 void setup() {
 
@@ -25,7 +18,6 @@ void setup() {
   pinMode(Bpin, INPUT_PULLUP);
   pinMode(LEDpin, OUTPUT);
   digitalWrite(LEDpin, HIGH);
-
   
   attachInterrupt(digitalPinToInterrupt(Apin), pinChangeInterrupt, CHANGE); // задаем обработчик прерываний
   attachInterrupt(digitalPinToInterrupt(Bpin), pinChangeInterrupt, CHANGE); // задаем обработчик прерываний
@@ -33,46 +25,15 @@ void setup() {
 
 void loop() {
   Serial.println(distance);
-  if (!maxEstablished){
-    if (setUpCounter < setUpTime){
-      setUpCounter++;
-      if (distance >= maxDistance){
-        maxDistance = distance;
-      }
-    } else {
-        setUpCounter = 0;
-        maxEstablished = true;
-        Serial.print("Max Established:");
-        Serial.println(maxDistance);
-    }
-  }
-  else if (!flatEstablished) {
-    if (flatCountingEnabled) { //Считаем только при включенном счете
-      if (distance == maxDistance) { // Если текущее значение максимум - считаем
-          flatLen++;
-      }
-      else if (distancePrinted == maxDistance) { // Если предыдущее значение было максимумом, а текущее - нет, то фиксируем максимум
-        flatEstablished = true;
-        Serial.print("Flat length Established:");
-        Serial.println(flatLen);
-      }
-    }
-    else if (distance != maxDistance) { // Счет включается только когда мы не находимся на верхней полке (максимуме)
-      flatCountingEnabled = true;
-    }
-  }
-  if (distance == distancePrinted && flatEstablished ){
-    flatCounter++;
-    if (flatCounter == flatLen / 2){
+
+  if (distance < distancePrinted){
+    if (!madePhoto) {
       Serial.println('P');
+      madePhoto = true;
     }
-  noInterrupts();
-  distanceChanged = false;
-  distancePrinted = distance;
-  interrupts();
   }
-  else {
-    flatCounter = 1;
+  else if (distance > distancePrinted){
+    madePhoto = false;
   }
 
   noInterrupts();
