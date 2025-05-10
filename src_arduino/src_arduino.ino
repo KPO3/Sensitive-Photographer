@@ -2,6 +2,7 @@
 
 int Apin = 2;
 int Bpin = 3;
+int LEDpin = 4;
 volatile bool Aprev = 0;
 volatile bool Bprev = 0;
 int distancePrinted = 0;
@@ -22,6 +23,8 @@ void setup() {
 
   pinMode(Apin, INPUT_PULLUP);
   pinMode(Bpin, INPUT_PULLUP);
+  pinMode(LEDpin, OUTPUT);
+  digitalWrite(LEDpin, HIGH);
 
   
   attachInterrupt(digitalPinToInterrupt(Apin), pinChangeInterrupt, CHANGE); // задаем обработчик прерываний
