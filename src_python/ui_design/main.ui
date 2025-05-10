@@ -33,7 +33,7 @@
      <string>Запуск</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="PortLineEdit">
     <property name="geometry">
      <rect>
       <x>22</x>
@@ -57,7 +57,7 @@
      <string>COM-порт</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="NameLineEdit">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -93,7 +93,7 @@
      <string>График</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="PhotoLabel">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -115,7 +115,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="CameraComboBox">
     <property name="geometry">
      <rect>
       <x>20</x>

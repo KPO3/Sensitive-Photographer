@@ -1,8 +1,7 @@
 import sys
-import numpy as np
 import pyqtgraph as pg
+import os
 from PyQt6 import QtCore, QtWidgets
-
 
 class RealTimePlot:
     def __init__(self, filename):
@@ -11,7 +10,7 @@ class RealTimePlot:
         # Создаем приложение и окно
         self.app = QtWidgets.QApplication(sys.argv)
         self.win = QtWidgets.QMainWindow()
-        self.win.setWindowTitle('Real-time Plot with Qt6')
+        self.win.setWindowTitle('График данных датчика')
 
         # Создаем PlotWidget
         self.plot_widget = pg.PlotWidget()
@@ -51,9 +50,11 @@ class RealTimePlot:
                     # Обновляем график
                     self.curve.setData(self.data_t, self.data_x)
         except Exception as e:
-            print(f"Error reading file: {e}")
+            print(f"Ошибка при чтении файла: {e}")
         except KeyboardInterrupt:
-            print("\nПрограмма остановлена пользователем.")
+            print("\nГрафик остановлен пользователем.")
+    def exit(self):
+        print("График закрыт")
 
     def run(self):
         sys.exit(self.app.exec())
@@ -61,7 +62,8 @@ class RealTimePlot:
 if __name__ == '__main__':
     filename = 'data_log.txt'  # Укажите путь к вашему файлу с данными
     if len(sys.argv) > 1:
-        filename = sys.argv[1]
+        filename = sys.argv[1] + '.txt'
     print(f"Читаю из {filename}")
-    plot = RealTimePlot(filename)
+    filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), sys.argv[1], filename)
+    plot = RealTimePlot(filepath)
     plot.run()
